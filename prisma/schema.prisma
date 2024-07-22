@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Sale {
+  id           Int      @id @default(autoincrement())
+  powerBall    Int
+  mobileNo     String
+  clientrefno  String   @unique
+  billNumber   String
+  barcode      String
+  billDate     DateTime
+  billAmount   Float
+  roundNo      String
+  saleDetails  SaleDetail[]
+}
+
+model SaleDetail {
+  id           Int      @id @default(autoincrement())
+  saleId       Int
+  billNumber   String
+  itemId       Int
+  saleDigit    String
+  saleAmount   Float
+  sale         Sale     @relation(fields: [saleId], references: [id])
+}
